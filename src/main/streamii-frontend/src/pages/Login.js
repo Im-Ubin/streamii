@@ -29,11 +29,17 @@ function Login() {
                 `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
                 { email, password },
             );
+
             const token = response.data;
             localStorage.setItem("token", token); // JWT 토큰 로컬 스토리지에 저장
             navigate("/");
         } catch (error) {
-            setErrorMessage("Invalid email or password!");
+            if (error.response && error.response.status === 401) {
+                setErrorMessage("이메일 혹은 비밀번호가 일치하지 않습니다.");
+            } else {
+                setErrorMessage("네트워크 에러. 다음에 다시 시도해주세요!");
+
+            }
         }
     };
 
@@ -69,7 +75,7 @@ function Login() {
                             />
                         </div>
                         {errorMessage && (
-                            <div style={{ color: "red" }}>{errorMessage}</div>
+                            <div style={{ color: "red", fontSize: "13px" }}>{errorMessage}</div>
                         )}
                         <button type="submit" className={styles.submitBtn}>로그인</button>
                     </form>

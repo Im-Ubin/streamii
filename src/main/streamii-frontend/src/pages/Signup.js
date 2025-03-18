@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HexColorPicker } from "react-colorful";
 import axios from "axios";
 import styles from '../styles/Signup.module.css'
 
@@ -8,7 +9,7 @@ function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
-    const [colorId, setColorId] = useState("");
+    const [color, setColor] = useState("#ffffff");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const authType = "general";
@@ -45,7 +46,7 @@ function Signup() {
                     password,
                     name,
                     authType,
-                    colorId,
+                    color,
                 },
             );
             setErrorMessage("");
@@ -53,7 +54,7 @@ function Signup() {
             setEmail("");
             setPassword("");
             setName("");
-            setColorId("");
+            setColor("#000");
             navigate("/login");
         } catch (error) {
             setErrorMessage("이미 사용 중인 이메일입니다.");
@@ -105,15 +106,11 @@ function Signup() {
                             />
                         </div>
                     </div>
-                    <div className={styles.colorForm}>
-                        <input
-                            type="text"
-                            value={colorId}
-                            onChange={(e) => setColorId(e.target.value)}
-                            className={styles.colorField}
-                            placeholder="색상코드"
-                            required
-                        />
+                    <div className={styles.colorContainer}>
+                        <div className={styles.colorForm}>
+                            <HexColorPicker color={color} onChange={setColor} />
+                        </div>
+                        <p className={styles.colorText}>{color}</p>
                     </div>
                     <button type="submit" className={styles.submitBtn}>등록</button>
                 </form>
